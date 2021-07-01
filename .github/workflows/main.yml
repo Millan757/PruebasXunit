@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        agent: ['windows-latest', 'ubuntu-latest', 'macos-latest']
+    runs-on: ${{matrix.agent}}
+    name: Pruebas
+      
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '2.2.108'
+      - run: dotnet build "Chat.sln"
+      - run: dotnet test "Chat.sln"
